@@ -18,6 +18,10 @@ function GridRecord (props) {
     )
 }
 
+GridRecord.defaultProps = {
+    record: {firstName: "N/A", lastName: "N/A", active: false}
+}
+
 function GridComponent() {
     const [records, setRecords] = useState(dataSource);
 
@@ -27,7 +31,7 @@ function GridComponent() {
     }
 
     let recordsGrid = records.map((record, index) => {
-        return <GridRecord record={record} key={index} toggleActive={ () => toggleActive(index)} />
+        return <GridRecord record={undefined} key={index} toggleActive={ () => toggleActive(index)} />
     });
 
     return (
