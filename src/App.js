@@ -8,12 +8,12 @@ const dataSource = [
     {firstName: "Peter", lastName: "Noname", active: true}
 ];
 
-function GridRecord ({record}) {
+function GridRecord (props) {
     return (
         <tr>
-            <td>{record.firstName}</td>
-            <td>{record.lastName}</td>
-            <td><input type="checkbox" checked={record.active}/></td>
+            <td>{props.record.firstName}</td>
+            <td>{props.record.lastName}</td>
+            <td><input type="checkbox" checked={props.record.active} onChange={props.toggleActive}/></td>
         </tr>
     )
 }
@@ -21,8 +21,13 @@ function GridRecord ({record}) {
 function GridComponent() {
     const [records, setRecords] = useState(dataSource);
 
-    let recordsGrid = records.map((record) => {
-        return <GridRecord record={record} />
+    function toggleActive(index) {
+        records[index] = { ...records[index], active: !records[index].active };
+        setRecords([...records]);
+    }
+
+    let recordsGrid = records.map((record, index) => {
+        return <GridRecord record={record} key={index} toggleActive={ () => toggleActive(index)} />
     });
 
     return (
