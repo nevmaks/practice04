@@ -1,6 +1,7 @@
 import './App.css';
 
 import React, { useState } from "react";
+import PropTypes from "prop-types";
 
 const dataSource = [
     {firstName: "John", lastName: "Doe", active: false},
@@ -18,6 +19,14 @@ function GridRecord (props) {
     )
 }
 
+GridRecord.propTypes = {
+    record: PropTypes.shape({
+        firstName: PropTypes.string.isRequired,
+        lastName: PropTypes.string.isRequired,
+        active: PropTypes.bool.isRequired
+    })
+}
+
 GridRecord.defaultProps = {
     record: {firstName: "N/A", lastName: "N/A", active: false}
 }
@@ -30,14 +39,23 @@ function GridComponent() {
         setRecords([...records]);
     }
 
+    function handleFilterChange(e) {
+        let value = e.target.value;
+        setRecords(
+            dataSource.filter((record) =>
+                record.firstName.toUpperCase().includes(value.toUpperCase())
+            )
+        );
+    }
+
     let recordsGrid = records.map((record, index) => {
-        return <GridRecord record={undefined} key={index} toggleActive={ () => toggleActive(index)} />
+        return <GridRecord record={record} key={index} toggleActive={ () => toggleActive(index)} />
     });
 
     return (
         <div style={{width: 300, height: 300, padding:20}}>
             <p>
-                <input type="text" placeholder="Filter by..." />
+                <input type="text" placeholder="Filter by..." onChange={handleFilterChange}/>
             </p>
             <table className="table table-condensed">
                 <thead>
