@@ -1,25 +1,53 @@
-import logo from './logo.svg';
 import './App.css';
 
+import React, { useState } from "react";
+
+const dataSource = [
+    {firstName: "John", lastName: "Doe", active: false},
+    {firstName: "Mary", lastName: "Moe", active: false},
+    {firstName: "Peter", lastName: "Noname", active: true}
+];
+
+function GridRecord ({record}) {
+    return (
+        <tr>
+            <td>{record.firstName}</td>
+            <td>{record.lastName}</td>
+            <td><input type="checkbox" checked={record.active}/></td>
+        </tr>
+    )
+}
+
+function GridComponent() {
+    const [records, setRecords] = useState(dataSource);
+
+    let recordsGrid = records.map((record) => {
+        return <GridRecord record={record} />
+    });
+
+    return (
+        <div style={{width: 300, height: 300, padding:20}}>
+            <p>
+                <input type="text" placeholder="Filter by..." />
+            </p>
+            <table className="table table-condensed">
+                <thead>
+                <tr>
+                    <th>First Name</th>
+                    <th>Last Name</th>
+                    <th>Active</th>
+                </tr>
+                </thead>
+                <tbody>
+                {recordsGrid}
+                </tbody>
+            </table>
+        </div>
+    );
+}
+
 function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+    return <GridComponent />
 }
 
 export default App;
